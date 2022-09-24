@@ -1,12 +1,10 @@
 import { Header, Nav } from './AppBar.styled';
 import { LinkStyled } from './AppBar.styled';
 
-export const AppBar = ({ currencyList }) => {
-  // console.log(currencyList);
-  const headerCuurencyList = currencyList?.filter(
+export const AppBar = ({ rates }) => {
+  const headerCuurencyList = rates?.filter(
     item => item.ccy === 'USD' || item.ccy === 'EUR'
   );
-  // console.log(headerCuurencyList);
   return (
     <>
       <Header>
