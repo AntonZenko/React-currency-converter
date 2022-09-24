@@ -29,10 +29,10 @@ export const CurrencyInput = props => {
   );
 };
 
-// CurrencyInput.propTypes = {
-//   amount: PropTypes.string.isRequired,
-//   currency: PropTypes.string.isRequired,
-//   currencies: PropTypes.array,
-//   onAmountChange: PropTypes.func,
-//   onCurrencyChange: PropTypes.func,
-// };
+CurrencyInput.propTypes = {
+  amount: PropTypes.string.isRequired,
+  currency: PropTypes.string.isRequired,
+  currencies: PropTypes.array,
+  onAmountChange: PropTypes.func,
+  onCurrencyChange: PropTypes.func,
+};

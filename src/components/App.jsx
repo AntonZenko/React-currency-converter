@@ -16,7 +16,7 @@ export const App = () => {
     setIsLoadding(true);
     try {
       fetchCurrency(currency1).then(response => {
-        console.log(response);
+        // console.log(response);
         setRates(makeOptions(response.data.rates));
       });
       setIsLoadding(false);
@@ -26,7 +26,7 @@ export const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(rates);
+  // console.log(rates);
 
   const options = ['USD', 'EUR', 'UAH', 'GBP'];
 
