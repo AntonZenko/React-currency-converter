@@ -1,55 +1,35 @@
-import { Header, Nav } from './AppBar.styled';
-import { LinkStyled } from './AppBar.styled';
+import { Title, List, Nav, Header } from './AppBar.styled';
+import PropTypes from 'prop-types';
 
-export const AppBar = ({ rates }) => {
-  const headerCuurencyList = rates?.filter(
-    item => item.ccy === 'USD' || item.ccy === 'EUR'
-  );
+import CurrencyItem from '../CurrencyItem';
+
+const AppBar = ({ rates }) => {
+  const curency = (rateA, rateB) => {
+    return (rateA / rateB).toFixed(2);
+  };
+
   return (
     <>
       <Header>
+        <Title>Latest Currency</Title>
         <Nav>
-          <LinkStyled>Currency</LinkStyled>
-          <ul
-            style={{
-              display: 'flex',
-              listStyle: 'none',
-            }}
-          >
-            {headerCuurencyList &&
-              headerCuurencyList.map(currency => (
-                <li
-                  key={currency.ccy}
-                  style={{
-                    marginRight: 20,
-                  }}
-                >
-                  <span
-                    style={{
-                      marginRight: 20,
-                    }}
-                  >
-                    {currency.ccy}{' '}
-                  </span>
-                  <span
-                    style={{
-                      marginRight: 20,
-                    }}
-                  >
-                    Buy {currency.buy}
-                  </span>
-                  <span
-                    style={{
-                      marginRight: 20,
-                    }}
-                  >
-                    Sale {currency.sale}
-                  </span>
-                </li>
-              ))}
-          </ul>
+          <List>
+            <CurrencyItem name={'USD'} value={curency(rates.UAH, rates.USD)} />
+            <CurrencyItem name={'EUR'} value={curency(rates.UAH, rates.EUR)} />
+          </List>
         </Nav>
       </Header>
     </>
   );
+};
+
+export default AppBar;
+
+AppBar.propTypes = {
+  rates: PropTypes.exact({
+    EUR: PropTypes.string,
+    GBP: PropTypes.string,
+    UAH: PropTypes.string,
+    USD: PropTypes.string,
+  }),
 };

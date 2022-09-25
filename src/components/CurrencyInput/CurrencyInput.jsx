@@ -1,34 +1,40 @@
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-// import './currencyInput.css';
+import { Box, Input, Select, Option } from './CurrencyInput.styled';
 
-export const CurrencyInput = props => {
+const CurrencyInput = ({
+  amount,
+  currency,
+  currencies,
+  onAmountChange,
+  onCurrencyChange,
+}) => {
   return (
-    <div className="group">
-      <input
+    <Box>
+      <Input
         type="text"
         name="amount"
         required
         id={nanoid()}
-        value={props.amount}
+        value={amount}
         onChange={event =>
-          props.onAmountChange(event.target.value.replace(/\D+/g, ''))
+          onAmountChange(event.target.value.replace(/\D+/g, ''))
         }
       />
-      <select
-        value={props.currency}
-        onChange={ev => props.onCurrencyChange(ev.target.value)}
+      <Select
+        value={currency}
+        onChange={event => onCurrencyChange(event.target.value)}
       >
-        {props.currencies?.map(currency => (
-          <option key={nanoid()} value={currency}>
+        {currencies?.map(currency => (
+          <Option key={nanoid()} value={currency}>
             {currency}
-          </option>
+          </Option>
         ))}
-      </select>
-    </div>
+      </Select>
+    </Box>
   );
 };
-
+export default CurrencyInput;
 CurrencyInput.propTypes = {
   amount: PropTypes.string.isRequired,
   currency: PropTypes.string.isRequired,

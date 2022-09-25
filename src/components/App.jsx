@@ -1,22 +1,24 @@
-// import './App.css';
-import { CurrencyInput } from './CurrencyInput/CurrencyInput';
-import { AppBar } from './AppBar/AppBar';
 import { useState, useEffect } from 'react';
-import { fetchCurrency } from './fetchService';
+import { fetchCurrency } from './fetchService/fetchService';
+import Container from './Container';
+import AppBar from './AppBar';
+import CurrencyInput from './CurrencyInput';
+import Button from './Button';
+import PageTitle from './PageTitle';
+import PropagateLoader from 'react-spinners/PropagateLoader';
 
 export const App = () => {
-  const [amount1, setAmount1] = useState('');
-  const [amount2, setAmount2] = useState('');
+  const [amountA, setAmountA] = useState('');
+  const [amountB, setAmountB] = useState('');
   const [currency1, setCurrency1] = useState('USD');
-  const [currency2, setCurrency2] = useState('UAH');
+  const [currencyB, setCurrencyB] = useState('UAH');
   const [rates, setRates] = useState('');
   const [isLoadding, setIsLoadding] = useState(false);
 
   useEffect(() => {
     setIsLoadding(true);
     try {
-      fetchCurrency(currency1).then(response => {
-        // console.log(response);
+      fetchCurrency().then(response => {
         setRates(makeOptions(response.data.rates));
       });
       setIsLoadding(false);
@@ -26,7 +28,12 @@ export const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log(rates);
+  useEffect(() => {
+    if (rates) {
+      handleAmountAChange(amountA);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rates]);
 
   const options = ['USD', 'EUR', 'UAH', 'GBP'];
 
@@ -34,79 +41,75 @@ export const App = () => {
     const filteredUsers = Object.keys(rates)
       .filter(key => options.includes(key))
       .reduce((obj, key) => {
-        obj[key] = rates[key];
+        obj[key] = rates[key].toFixed(2);
         return obj;
       }, {});
     return filteredUsers;
   };
 
-  useEffect(() => {
-    if (rates) {
-      handleAmount1Change(amount1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rates]);
-
   function format(number) {
     return number.toFixed(2);
   }
 
-  function handleAmount1Change(amount1) {
-    if (amount1 !== '') {
-      setAmount2(format((amount1 * rates[currency2]) / rates[currency1]));
+  function handleAmountAChange(amountA) {
+    if (amountA !== '') {
+      setAmountB(format((amountA * rates[currencyB]) / rates[currency1]));
     }
-    setAmount1(amount1);
+    setAmountA(amountA);
   }
 
   function handleCurrency1Change(currency1) {
-    if (amount1 !== '') {
-      setAmount2(format((amount1 * rates[currency2]) / rates[currency1]));
+    if (amountA !== '') {
+      setAmountB(format((amountA * rates[currencyB]) / rates[currency1]));
     }
     setCurrency1(currency1);
   }
 
-  function handleAmount2Change(amount2) {
-    if (amount2 !== '') {
-      setAmount1(format((amount2 * rates[currency1]) / rates[currency2]));
+  function handleAmountBChange(amountB) {
+    if (amountB !== '') {
+      setAmountA(format((amountB * rates[currency1]) / rates[currencyB]));
     }
-    setAmount2(amount2);
+    setAmountB(amountB);
   }
 
-  function handleCurrency2Change(currency2) {
-    if (amount2 !== '') {
-      setAmount1(format((amount2 * rates[currency1]) / rates[currency2]));
+  function handleCurrencyBChange(currencyB) {
+    if (amountB !== '') {
+      setAmountA(format((amountB * rates[currency1]) / rates[currencyB]));
     }
-    setCurrency2(currency2);
+    setCurrencyB(currencyB);
   }
 
   const onButtonChange = () => {
-    setCurrency1(currency2);
-    setCurrency2(currency1);
-    setAmount1(amount2);
-    setAmount2(amount1);
+    setCurrency1(currencyB);
+    setCurrencyB(currency1);
+    setAmountA(amountB);
+    setAmountB(amountA);
   };
 
   return (
-    <div>
-      <AppBar />
-      {isLoadding ? <h1>Loadding...</h1> : <h1>Currency Converter</h1>}
-      <CurrencyInput
-        onAmountChange={handleAmount1Change}
-        onCurrencyChange={handleCurrency1Change}
-        currencies={Object.keys(rates)}
-        amount={amount1}
-        currency={currency1}
-      />
-      <button type="button" onClick={onButtonChange}>
-        CHANGE
-      </button>
-      <CurrencyInput
-        onAmountChange={handleAmount2Change}
-        onCurrencyChange={handleCurrency2Change}
-        currencies={Object.keys(rates)}
-        amount={amount2}
-        currency={currency2}
-      />
-    </div>
+    <>
+      {rates && <AppBar rates={rates} />}
+      <PageTitle>Currency Converter</PageTitle>
+      <Container>
+        <CurrencyInput
+          onAmountChange={handleAmountAChange}
+          onCurrencyChange={handleCurrency1Change}
+          currencies={Object.keys(rates)}
+          amount={amountA}
+          currency={currency1}
+        />
+        <Button onButtonChange={onButtonChange} />
+        <CurrencyInput
+          onAmountChange={handleAmountBChange}
+          onCurrencyChange={handleCurrencyBChange}
+          currencies={Object.keys(rates)}
+          amount={amountB}
+          currency={currencyB}
+        />
+        {isLoadding && (
+          <PropagateLoader color={'#3f51b5'} loading={isLoadding} size={15} />
+        )}
+      </Container>
+    </>
   );
 };
