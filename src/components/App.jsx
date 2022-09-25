@@ -92,6 +92,7 @@ export const App = () => {
       <PageTitle>Currency Converter</PageTitle>
       <Container>
         <CurrencyInput
+          autocomplete="off"
           onAmountChange={handleAmountAChange}
           onCurrencyChange={handleCurrency1Change}
           currencies={Object.keys(rates)}
@@ -100,6 +101,7 @@ export const App = () => {
         />
         <Button onButtonChange={onButtonChange} />
         <CurrencyInput
+          autocomplete="off"
           onAmountChange={handleAmountBChange}
           onCurrencyChange={handleCurrencyBChange}
           currencies={Object.keys(rates)}
