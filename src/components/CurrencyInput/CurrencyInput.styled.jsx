@@ -48,3 +48,12 @@ export const Option = styled.option`
   font-weight: 500;
   // color: #36357e;
 `;
+
+export const Label = styled.label`
+  margin-right: 10px;
+  margin-bottom: 5px;
+  text-align: start;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+`;

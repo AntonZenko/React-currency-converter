@@ -27,9 +27,8 @@ export default AppBar;
 
 AppBar.propTypes = {
   rates: PropTypes.exact({
-    EUR: PropTypes.string,
-    GBP: PropTypes.string,
-    UAH: PropTypes.string,
     USD: PropTypes.string,
+    EUR: PropTypes.string,
+    RUR: PropTypes.string,
   }),
 };

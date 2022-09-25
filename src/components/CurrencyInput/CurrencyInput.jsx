@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-import { Box, Input, Select, Option } from './CurrencyInput.styled';
+import { Box, Label, Input, Select, Option } from './CurrencyInput.styled';
 
 const CurrencyInput = ({
   amount,
@@ -8,14 +8,18 @@ const CurrencyInput = ({
   currencies,
   onAmountChange,
   onCurrencyChange,
+  name,
 }) => {
+  const id = nanoid();
+
   return (
     <Box>
+      <Label htmlFor={id}>{name}</Label>
       <Input
         type="text"
         name="amount"
         required
-        id={nanoid()}
+        id={id}
         value={amount}
         onChange={event =>
           onAmountChange(event.target.value.replace(/\D+/g, ''))
