@@ -13,15 +13,16 @@ export const App = () => {
   const [currency1, setCurrency1] = useState('USD');
   const [currencyB, setCurrencyB] = useState('UAH');
   const [rates, setRates] = useState('');
-  const [isLoadding, setIsLoadding] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoadding(true);
+    setIsLoading(true);
     try {
       fetchCurrency().then(response => {
+        console.log(response.data.rates);
         setRates(makeOptions(response.data.rates));
       });
-      setIsLoadding(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -47,34 +48,30 @@ export const App = () => {
     return filteredUsers;
   };
 
-  function format(number) {
-    return number.toFixed(2);
-  }
-
   function handleAmountAChange(amountA) {
     if (amountA !== '') {
-      setAmountB(format((amountA * rates[currencyB]) / rates[currency1]));
+      setAmountB(((amountA * rates[currencyB]) / rates[currency1]).toFixed(2));
     }
     setAmountA(amountA);
   }
 
   function handleCurrency1Change(currency1) {
     if (amountA !== '') {
-      setAmountB(format((amountA * rates[currencyB]) / rates[currency1]));
+      setAmountB(((amountA * rates[currencyB]) / rates[currency1]).toFixed(2));
     }
     setCurrency1(currency1);
   }
 
   function handleAmountBChange(amountB) {
     if (amountB !== '') {
-      setAmountA(format((amountB * rates[currency1]) / rates[currencyB]));
+      setAmountA(((amountB * rates[currency1]) / rates[currencyB]).toFixed(2));
     }
     setAmountB(amountB);
   }
 
   function handleCurrencyBChange(currencyB) {
     if (amountB !== '') {
-      setAmountA(format((amountB * rates[currency1]) / rates[currencyB]));
+      setAmountA(((amountB * rates[currency1]) / rates[currencyB]).toFixed(2));
     }
     setCurrencyB(currencyB);
   }
@@ -108,8 +105,8 @@ export const App = () => {
           amount={amountB}
           currency={currencyB}
         />
-        {isLoadding && (
-          <PropagateLoader color={'#3f51b5'} loading={isLoadding} size={15} />
+        {isLoading && (
+          <PropagateLoader color={'#3f51b5'} loading={isLoading} size={15} />
         )}
       </Container>
     </>
